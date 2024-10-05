@@ -1,0 +1,4 @@
+[core]
+    remote = localstorge
+['remote "localstorge"']
+    url = C:\Users\user\Documents\Programming\Kifiya_10X\Local_Storage\Credit_Risk_Model
