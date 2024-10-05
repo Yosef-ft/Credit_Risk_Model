@@ -151,3 +151,27 @@ class Plots:
 
         except Exception as e:
             logger.error(f"Can't plot the distribution: {e}")
+
+
+    def bivariant_distribution(self, data:pd.DataFrame, col: str, hue: str):
+        '''
+        This function plots columns in respect to another column (plots countplot for two columns)
+
+
+        Parameter:
+        ----------
+            col(str): The column to plot
+            hue(str): The column to compare each col with
+
+        Retruns:
+        --------
+            plt.show()
+        '''
+
+        fig = plt.figure(figsize=(10,6))
+
+        sns.countplot(x=col, data=data, hue=hue, palette = 'pastel')
+        
+        plt.xticks(rotation=45)
+        plt.title(f'Comparing {col} in respect to {hue}')
+        plt.show()
