@@ -1,6 +1,8 @@
 .venv
 
-data
+*.xlsx
+
+*.csv
 
 __pycache__
 
