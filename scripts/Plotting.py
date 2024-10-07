@@ -175,3 +175,25 @@ class Plots:
         plt.xticks(rotation=45)
         plt.title(f'Comparing {col} in respect to {hue}')
         plt.show()
+
+
+    def RFM_Space_visualization(self, RFM_data):
+        '''
+        This function plots a 3d scatter plot to visualize RFM space:
+
+        Parameter:
+        ----------
+            RFM_data(pd.DataFrame): dataframe containing R_rank_norm, F_rank_norm, M_rank_norm, RFM_Score
+        '''
+        fig = plt.figure(figsize=(10,6))
+        ax = fig.add_subplot(projection='3d')
+
+        ax.scatter(RFM_data['R_rank_norm'], RFM_data['F_rank_norm'], RFM_data['M_rank_norm'], c=RFM_data['RFM_Score'], cmap='viridis')
+
+        ax.set_xlabel('Recency Rank')
+        ax.set_ylabel('Frequency Rank')
+        ax.set_zlabel('Monetary Rank')
+        ax.set_title('RFMS Space Visualization')
+
+        plt.colorbar(ax.scatter(RFM_data['R_rank_norm'], RFM_data['F_rank_norm'], RFM_data['M_rank_norm'], c=RFM_data['RFM_Score'], cmap='viridis'), label='RFM Score')
+        plt.show()
