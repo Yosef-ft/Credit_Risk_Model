@@ -151,3 +151,54 @@ class DataUtils:
         print(info_df)
 
         return info_df
+
+
+
+class WoE:
+
+    # Function to compute Weight of Evidence
+
+    def calculate_woe_iv(self,dataset, feature, target):
+        lst = []
+        for i in range(dataset[feature].nunique()):
+            val = list(dataset[feature].unique())[i]
+            lst.append({
+                'Bin Values': val,
+                'All': dataset[dataset[feature] == val].count()[feature],
+                'Good': dataset[(dataset[feature] == val) & (dataset[target] == 0)].count()[feature],
+                'Bad': dataset[(dataset[feature] == val) & (dataset[target] == 1)].count()[feature]
+            }) 
+        dset = pd.DataFrame(lst)
+        dset['Distr_Good'] = dset['Good'] / dset['Good'].sum()
+        dset['Distr_Bad'] = dset['Bad'] / dset['Bad'].sum()
+        dset['WoE'] = np.log(dset['Distr_Good'] / dset['Distr_Bad'])
+        dset = dset.replace({'WoE': {np.inf: 0, -np.inf: 0}})
+        dset['IV'] = (dset['Distr_Good'] - dset['Distr_Bad']) * dset['WoE']
+        iv = dset['IV'].sum()
+        dset = dset.sort_values(by='WoE')
+        return dset, iv
+    
+
+
+    # Computing WoEs and IVs
+    def compute_iv(self, train_bins):
+        lst = [] 
+        IV_df = pd.DataFrame(columns=['Variable','IV']) 
+        for col in train_bins.columns:
+            if col == 'RiskResult': continue 
+            else:
+                df, iv = self.calculate_woe_iv(train_bins, col, 'RiskResult')
+                    
+            lst.append(df)
+            
+            new_row = pd.DataFrame({
+                "Variable": [col],
+                "IV": [iv]
+            })    
+
+            IV_df = pd.concat([IV_df, new_row], ignore_index=True)
+
+        return IV_df
+        
+
+        
