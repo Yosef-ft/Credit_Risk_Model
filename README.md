@@ -14,6 +14,14 @@ Credit scoring is the process of assigning a numerical score to represent a borr
 - Credit Scoring Model: Develop a model that converts the risk probability estimates into a credit score for each user.
 
 
+## Topics and tools
+- Explanatory data analysis
+- Feature engineering
+- Calculating WoE, IV and RFMS for creating proxy variables
+- Model training and clustering dataset using Scikit-learn
+- Data Version Control using DVC
+
+
 ## Getting Started
 ### Prerequisites
 Make sure you have the following installed:
