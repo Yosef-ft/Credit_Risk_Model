@@ -20,6 +20,7 @@ Credit scoring is the process of assigning a numerical score to represent a borr
 - Calculating WoE, IV and RFMS for creating proxy variables
 - Model training and clustering dataset using Scikit-learn
 - Data Version Control using DVC
+- API endpoints using Django
 
 
 ## Getting Started
