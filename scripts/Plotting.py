@@ -3,6 +3,7 @@ import math
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 import missingno as msno
 from Utils import logger
 from statsmodels.distributions.empirical_distribution import ECDF
@@ -58,7 +59,7 @@ class Plots:
             logger.error(f"Error in plotting Outliers: {e}")    
 
 
-    def visualize_correlations(self, data: pd.DataFrame, num_cols: list):
+    def visualize_correlations(self, data: pd.DataFrame, num_cols: list, huge_col: bool = False):
         '''
         This function is used to find the correaltion for numerical columns
 
@@ -66,15 +67,23 @@ class Plots:
         -----------
             data(pd.DataFrame)
             num_cols(list): List of numerical columns for analysis
+            huge_col(bool): This is a bool to mask the upper have of the correlation if True
         
         Returns:
             sns.plot
         '''
         logger.debug('Plotting Heatmap for numerical columns')
-        plt.figure(figsize=(10, 8))
         try: 
-            correlation = data[num_cols].corr()
-            sns.heatmap(correlation, annot=True, cbar=True, cmap='Blues', annot_kws={"weight": "bold"})
+            if huge_col:
+                plt.figure(figsize=(12, 10))
+                correlation = data[num_cols].corr()
+                f_mask = np.triu(np.ones_like(correlation, dtype=bool))
+                sns.heatmap(correlation, mask=f_mask, annot=True, cmap="coolwarm", vmin=-1, vmax=1, center=0,
+                            square=True, linewidths=.5, cbar_kws={"shrink": .5})
+            else:              
+                plt.figure(figsize=(10, 8))
+                correlation = data[num_cols].corr()
+                sns.heatmap(correlation, annot=True, cbar=True, cmap='Blues', annot_kws={"weight": "bold"})
             plt.title('Correlation between numerical columns')
             plt.plot()
         except Exception as e:
